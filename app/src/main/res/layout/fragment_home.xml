@@ -11,29 +11,29 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_welcome_note"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welcome to MyCakeLk Admin Page!"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
+            android:layout_marginBottom="16dp"
             android:gravity="center"
-            android:layout_marginBottom="16dp" />
+            android:text="Welcome to MyCakeLk Admin Page!"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_admin_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="Admin Name: John Doe"
-            android:textSize="20sp"
-            android:textStyle="italic"
             android:textColor="@android:color/darker_gray"
-            android:gravity="center" />
+            android:textSize="20sp"
+            android:textStyle="italic" />
 
     </LinearLayout>
 

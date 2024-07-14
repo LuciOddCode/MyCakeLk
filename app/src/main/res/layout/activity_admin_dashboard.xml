@@ -39,6 +39,16 @@
                 android:layout_marginBottom="5dp"
                 tools:ignore="MissingConstraints" />
 
+            <FrameLayout
+                android:id="@+id/fl_admin_dashboard"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp"
+                android:background="@color/white">
+
+
+            </FrameLayout>
+
 
 
         </LinearLayout>

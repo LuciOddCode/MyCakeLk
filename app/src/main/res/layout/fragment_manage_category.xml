@@ -6,9 +6,42 @@
     tools:context=".ManageCategoryFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/et_category_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Category Name" />
+
+        <Button
+            android:id="@+id/btn_add_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Category" />
+
+        <Button
+            android:id="@+id/btn_update_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Update Category" />
+
+        <Button
+            android:id="@+id/btn_delete_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Delete Category" />
+
+        <ListView
+            android:id="@+id/lv_categories"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+    </LinearLayout>
 
 </FrameLayout>

@@ -7,6 +7,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +19,14 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class ManageCakesFragment extends Fragment {
+
+    EditText et_cake_name, et_cake_price, et_cake_description, et_cake_image;
+    ImageView iv_cake_image;
+    Spinner sp_cake_category;
+
+    Button btn_add_cake, btn_update_cake, btn_delete_cake;
+
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -58,7 +71,39 @@ public class ManageCakesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_manage_cakes, container, false);
+
+        et_cake_name = view.findViewById(R.id.et_cake_name);
+        et_cake_price = view.findViewById(R.id.et_cake_price);
+        et_cake_description = view.findViewById(R.id.et_cake_description);
+        et_cake_image = view.findViewById(R.id.et_cake_image);
+        iv_cake_image = view.findViewById(R.id.iv_cake_image);
+        sp_cake_category = view.findViewById(R.id.sp_cake_category);
+        btn_add_cake = view.findViewById(R.id.btn_add_cake);
+        btn_update_cake = view.findViewById(R.id.btn_update_cake);
+        btn_delete_cake = view.findViewById(R.id.btn_delete_cake);
+
+        btn_add_cake.setOnClickListener(v -> addCake());
+        btn_update_cake.setOnClickListener(v -> updateCake());
+        btn_delete_cake.setOnClickListener(v -> deleteCake());
+
+
         return inflater.inflate(R.layout.fragment_manage_cakes, container, false);
+    }
+
+    private void deleteCake() {
+
+    }
+
+    private void updateCake() {
+
+    }
+
+    private void addCake() {
+
+    }
+
+    private void loadCakes() {
+
     }
 }

@@ -2,6 +2,7 @@ package com.example.mycake.ui;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.mycake.HomeFragment;
 import com.example.mycake.ManageCakesFragment;
@@ -27,6 +29,9 @@ public class AdminDashboardActivity extends AppCompatActivity implements Navigat
     DrawerLayout dl_admin_main;
     NavigationView nv_admin_main;
     Toolbar mtb_admin_main;
+
+    public static final int NAV_HOME = R.id.nav_home;
+    public static final int NAV_MANAGE_ORDERS = R.id.nav_manage_orders;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +58,7 @@ public class AdminDashboardActivity extends AppCompatActivity implements Navigat
 
         // Load the default fragment
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fl_home,
+            getSupportFragmentManager().beginTransaction().replace(R.id.fl_admin_dashboard,
                     new HomeFragment()).commit();
             nv_admin_main.setCheckedItem(R.id.nav_home);
         }
@@ -61,35 +66,36 @@ public class AdminDashboardActivity extends AppCompatActivity implements Navigat
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Toast.makeText(this, item.getItemId(), Toast.LENGTH_SHORT).show();
         Fragment selectedFragment = null;
-        int itemId = item.getItemId();
-        System.out.println("Item ID: " + itemId);
-
-       /* switch (item.getItemId()) {
-            case R.id.nav_home:
-                selectedFragment = new HomeFragment();
-                break;
-            case R.id.nav_manage_orders:
-                selectedFragment = new ManageOrdersFragment();
-                break;
-            case R.id.nav_manage_category:
-                selectedFragment = new ManageCategoryFragment();
-                break;
-            case R.id.nav_manage_cakes:
-                selectedFragment = new ManageCakesFragment();
-                break;
-            case R.id.nav_logout:
-                // Handle logout here
-                return true;
-        }*/
-
-        if (selectedFragment != null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fl_home,
-                    selectedFragment).commit();
+        if (item.getItemId() == NAV_HOME) {
+            Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
+            selectedFragment = new HomeFragment();
+        } else if (item.getItemId() == NAV_MANAGE_ORDERS) {
+            Toast.makeText(this, "Manage Orders", Toast.LENGTH_SHORT).show();
+            selectedFragment = new ManageOrdersFragment();
+        } else if (item.getItemId() == R.id.nav_manage_cakes) {
+            selectedFragment = new ManageCakesFragment();
+        } else if (item.getItemId() == R.id.nav_manage_category) {
+            selectedFragment = new ManageCategoryFragment();
+        }else if (item.getItemId() == R.id.nav_logout) {
+            Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
         }
 
+        if (selectedFragment != null) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fl_admin_dashboard, selectedFragment);
+            transaction.commit();
+        } else {
+            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, item.getItemId(), Toast.LENGTH_SHORT).show();
+
+        }
         dl_admin_main.closeDrawer(GravityCompat.START);
+
         return true;
     }
+
+
 
 }

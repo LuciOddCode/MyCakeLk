@@ -1,6 +1,8 @@
 package com.example.mycake.db;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -28,6 +30,20 @@ public class DBHelperUser extends SQLiteOpenHelper {
     private static final String COLUMN_PRODUCT_DESCRIPTION = "product_description";
     private static final String COLUMN_PRODUCT_IMAGE = "product_image";
     private static final String COLUMN_PRODUCT_CATEGORY = "product_category";
+
+    private static final String TABLE_ORDER = "orders";
+    private static final String COLUMN_ORDER_ID = "order_id";
+    private static final String COLUMN_ORDER_USER_ID = "order_user_id";
+    private static final String COLUMN_ORDER_TOTAL_PRICE = "order_total_price";
+    private static final String COLUMN_ORDER_DATE = "order_date";
+    private static final String COLUMN_ORDER_STATUS = "order_status";
+
+    private static final String TABLE_ORDER_DETAIL = "order_detail";
+    private static final String COLUMN_ORDER_DETAIL_ID = "order_detail_id";
+    private static final String COLUMN_ORDER_DETAIL_QUANTITY = "order_detail_quantity";
+    private static final String COLUMN_ORDER_DETAIL_PRICE = "order_detail_price";
+
+
 
 
 
@@ -58,9 +74,25 @@ public class DBHelperUser extends SQLiteOpenHelper {
                 COLUMN_PRODUCT_IMAGE + " TEXT, " +
                 COLUMN_PRODUCT_CATEGORY + " TEXT)";
 
+        String createTableOrder = "CREATE TABLE " + TABLE_ORDER + " (" +
+                COLUMN_ORDER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_ORDER_USER_ID + " INTEGER, " +
+                COLUMN_ORDER_TOTAL_PRICE + " TEXT, " +
+                COLUMN_ORDER_DATE + " TEXT, " +
+                COLUMN_ORDER_STATUS + " TEXT)";
+
+        String createTableOrderDetail = "CREATE TABLE " + TABLE_ORDER_DETAIL + " (" +
+                COLUMN_ORDER_DETAIL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_ORDER_ID + " INTEGER, " +
+                COLUMN_PRODUCT_ID + " INTEGER, " +
+                COLUMN_ORDER_DETAIL_QUANTITY + " INTEGER, " +
+                COLUMN_ORDER_DETAIL_PRICE + " TEXT)";
+
         db.execSQL(createTableUser);
         db.execSQL(createTableCategory);
         db.execSQL(createTableProduct);
+        db.execSQL(createTableOrder);
+        db.execSQL(createTableOrderDetail);
 
     }
 
@@ -69,9 +101,41 @@ public class DBHelperUser extends SQLiteOpenHelper {
         String dropTableUser = "DROP TABLE IF EXISTS " + TABLE_USER;
         String dropTableCategory = "DROP TABLE IF EXISTS " + TABLE_CATEGORY;
         String dropTableProduct = "DROP TABLE IF EXISTS " + TABLE_PRODUCT;
+        String dropTableOrder = "DROP TABLE IF EXISTS " + TABLE_ORDER;
+        String dropTableOrderDetail = "DROP TABLE IF EXISTS " + TABLE_ORDER_DETAIL;
         db.execSQL(dropTableUser);
         db.execSQL(dropTableCategory);
         db.execSQL(dropTableProduct);
+        db.execSQL(dropTableOrder);
+        db.execSQL(dropTableOrderDetail);
         onCreate(db);
     }
+
+    public Cursor getAllCategories() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_CATEGORY, null);
+    }
+
+    public void addCategory(String name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_CATEGORY_NAME, name);
+        db.insert(TABLE_CATEGORY, null, contentValues);
+    }
+
+    public void updateCategory(int id, String name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_CATEGORY_NAME, name);
+        db.update(TABLE_CATEGORY, contentValues, COLUMN_CATEGORY_ID + " = ?", new String[]{String.valueOf(id)});
+    }
+
+    public void deleteCategory(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_CATEGORY, COLUMN_CATEGORY_ID + " = ?", new String[]{String.valueOf(id)});
+    }
+
+
+
+
 }
