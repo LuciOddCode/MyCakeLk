@@ -5,14 +5,16 @@
     android:background="?attr/colorPrimary"
     android:orientation="vertical"
     android:gravity="bottom|center"
+    android:padding="20dp"
     >
 
     <ImageView
         android:id="@+id/img_profile"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
         android:layout_gravity="center"
         android:layout_marginBottom="10dp"
         android:padding="10dp"
-        android:src="@mipmap/ic_logo" />
+        android:src="@mipmap/ic_banner" />
+
 </LinearLayout>
