@@ -16,9 +16,12 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mycake.db.DBHelperUser;
+import com.example.mycake.ui.AdminDashboardActivity;
+import com.example.mycake.ui.UserMain;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
+    public static String CURRENT_USER="";
 
     RecyclerView recyclerView;
     Button btnLogin;
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
@@ -59,11 +63,16 @@ public class MainActivity extends AppCompatActivity {
                 String role = cursor.getString(4);
                 if (role.equals("ADMIN")) {
                     // admin
+                    CURRENT_USER = cursor.getString(2);
                     Toast.makeText(this, "Welcome Admin", Toast.LENGTH_SHORT).show();
-
+                    Intent intent = new Intent(this, AdminDashboardActivity.class);
+                    startActivity(intent);
                 } else {
                     // user
+                    CURRENT_USER = cursor.getString(2);
                     Toast.makeText(this, "Welcome User", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(this, UserMain.class);
+                    startActivity(intent);
                 }
             } else {
                 Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show();

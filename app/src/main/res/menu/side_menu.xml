@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/clp_home"
+            android:title="Home" />
+        <item
+            android:id="@+id/nav_manage_orders"
+            android:icon="@drawable/clp_orders"
+            android:title="Manage Orders" />
+        <item
+            android:id="@+id/nav_manage_category"
+            android:icon="@drawable/clp_category_management"
+            android:title="Manage Category" />
+        <item
+            android:id="@+id/nav_manage_cakes"
+            android:icon="@drawable/clp_cake_management"
+            android:title="Manage Cakes" />
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/clp_logout"
+            android:title="Logout" />
+    </group>
+</menu>
