@@ -8,6 +8,30 @@
     tools:context=".ui.AdminDashboardActivity"
     tools:openDrawer="start">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/mtb_admin_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:title="MyCakeLk"
+            app:titleTextColor="@color/cardview_light_background"
+            tools:ignore="MissingConstraints" />
+
+        <FrameLayout
+            android:id="@+id/fl_admin_dashboard"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            android:background="@color/white"/>
+    </LinearLayout>
+
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nv_admin_main"
         android:layout_width="wrap_content"
@@ -15,44 +39,5 @@
         app:headerLayout="@layout/side_menu_header"
         app:menu="@menu/side_menu"
         android:layout_gravity="start" />
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/mtb_admin_main"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/colorPrimary"
-                android:minHeight="?attr/actionBarSize"
-                android:theme="?attr/actionBarTheme"
-                app:title="MyCakeLk"
-                app:titleTextColor="@color/cardview_light_background"
-                android:layout_marginStart="10dp"
-                android:layout_marginBottom="5dp"
-                tools:ignore="MissingConstraints" />
-
-            <FrameLayout
-                android:id="@+id/fl_admin_dashboard"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="16dp"
-                android:background="@color/white">
-
-
-            </FrameLayout>
-
-
-
-        </LinearLayout>
-
-    </ScrollView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

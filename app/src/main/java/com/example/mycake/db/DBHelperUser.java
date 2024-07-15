@@ -69,7 +69,7 @@ public class DBHelperUser extends SQLiteOpenHelper {
         String createTableProduct = "CREATE TABLE " + TABLE_PRODUCT + " (" +
                 COLUMN_PRODUCT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_PRODUCT_NAME + " TEXT, " +
-                COLUMN_PRODUCT_PRICE + " TEXT, " +
+                COLUMN_PRODUCT_PRICE + " DOUBLE, " +
                 COLUMN_PRODUCT_DESCRIPTION + " TEXT, " +
                 COLUMN_PRODUCT_IMAGE + " TEXT, " +
                 COLUMN_PRODUCT_CATEGORY + " TEXT)";
@@ -77,7 +77,7 @@ public class DBHelperUser extends SQLiteOpenHelper {
         String createTableOrder = "CREATE TABLE " + TABLE_ORDER + " (" +
                 COLUMN_ORDER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_ORDER_USER_ID + " INTEGER, " +
-                COLUMN_ORDER_TOTAL_PRICE + " TEXT, " +
+                COLUMN_ORDER_TOTAL_PRICE + " DOUBLE, " +
                 COLUMN_ORDER_DATE + " TEXT, " +
                 COLUMN_ORDER_STATUS + " TEXT)";
 
@@ -86,7 +86,7 @@ public class DBHelperUser extends SQLiteOpenHelper {
                 COLUMN_ORDER_ID + " INTEGER, " +
                 COLUMN_PRODUCT_ID + " INTEGER, " +
                 COLUMN_ORDER_DETAIL_QUANTITY + " INTEGER, " +
-                COLUMN_ORDER_DETAIL_PRICE + " TEXT)";
+                COLUMN_ORDER_DETAIL_PRICE + " DOUBLE)";
 
         db.execSQL(createTableUser);
         db.execSQL(createTableCategory);

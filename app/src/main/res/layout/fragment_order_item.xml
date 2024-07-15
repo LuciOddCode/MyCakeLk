@@ -1,0 +1,44 @@
+<!-- order_item.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/tvOrderID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Order ID:"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvOrderDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Date:" />
+
+    <TextView
+        android:id="@+id/tvOrderTotalPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Total Price:" />
+
+    <TextView
+        android:id="@+id/tvOrderStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Status:" />
+
+    <Button
+        android:id="@+id/btnAcceptOrder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Accept" />
+
+    <Button
+        android:id="@+id/btnRemoveOrder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remove" />
+</LinearLayout>

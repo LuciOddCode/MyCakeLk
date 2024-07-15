@@ -1,17 +1,24 @@
 package com.example.mycake;
 
+import android.annotation.SuppressLint;
+import android.database.Cursor;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+
+import com.example.mycake.db.DBHelperUser;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,12 +27,18 @@ import android.widget.TextView;
  */
 public class ManageCakesFragment extends Fragment {
 
-    EditText et_cake_name, et_cake_price, et_cake_description, et_cake_image;
+    EditText et_cake_name, et_cake_price, et_cake_description;
     ImageView iv_cake_image;
-    Spinner sp_cake_category;
+    Spinner sp_cake_category,et_cake_image;
 
     Button btn_add_cake, btn_update_cake, btn_delete_cake;
+    ListView lv_cakes;
+    ArrayAdapter<String> cakeAdapter;
+    ArrayList<String> cakeList;
 
+    DBHelperUser dbHelperUser;
+
+    int selectedCakeId = -1;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -68,6 +81,7 @@ public class ManageCakesFragment extends Fragment {
         }
     }
 
+    @SuppressLint("DiscouragedApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -82,28 +96,131 @@ public class ManageCakesFragment extends Fragment {
         btn_add_cake = view.findViewById(R.id.btn_add_cake);
         btn_update_cake = view.findViewById(R.id.btn_update_cake);
         btn_delete_cake = view.findViewById(R.id.btn_delete_cake);
+        lv_cakes = view.findViewById(R.id.lv_cakes);
+
+        // Implement the logic for loading the cakes
+        dbHelperUser = new DBHelperUser(getContext());
+        cakeList = new ArrayList<>();
+        cakeAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, cakeList);
+
+        lv_cakes.setAdapter(cakeAdapter);
+
+        loadCakes();
+
+        loadCategories();
+
+        /*loading images for image spinner*/
+        et_cake_image.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, new String[]{"cake1", "cake2", "cake3", "cake4", "cake5"}));
+
+
+
 
         btn_add_cake.setOnClickListener(v -> addCake());
         btn_update_cake.setOnClickListener(v -> updateCake());
         btn_delete_cake.setOnClickListener(v -> deleteCake());
 
+        lv_cakes.setOnItemClickListener((adapterView, view1, position, id) -> {
+            String selectedCake = cakeList.get(position);
+            et_cake_name.setText(selectedCake);
+            selectedCakeId = position + 1;
+        });
 
-        return inflater.inflate(R.layout.fragment_manage_cakes, container, false);
+        et_cake_image.setOnItemClickListener((adapterView, view1, position, id) -> {
+            String selectedCake = cakeList.get(position);
+            if(selectedCake.equals("cake1")){
+                iv_cake_image.setImageResource(R.mipmap.ic_cake1);
+            }else if(selectedCake.equals("cake2")){
+                iv_cake_image.setImageResource(R.mipmap.ic_cake2);
+            }else if(selectedCake.equals("cake3")){
+                iv_cake_image.setImageResource(R.mipmap.ic_cake3);
+            }else if(selectedCake.equals("cake4")){
+                iv_cake_image.setImageResource(R.mipmap.ic_cake4);
+            }else if(selectedCake.equals("cake5")){
+                iv_cake_image.setImageResource(R.mipmap.ic_cake5);
+            }
+        });
+
+
+        return view;
     }
 
-    private void deleteCake() {
-
+    private void loadCategories() {
+        // Implement the logic for loading the categories
+        Cursor cursor = dbHelperUser.getReadableDatabase().query("category", null, null, null, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                sp_cake_category.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, new String[]{cursor.getString(1)}));
+            } while (cursor.moveToNext());
+        }
     }
 
-    private void updateCake() {
-
+    private void loadCakes() {
+        // Implement the logic for loading the cakes
+        cakeList.clear();
+        Cursor cursor = dbHelperUser.getReadableDatabase().query("product", null, null, null, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                cakeList.add(cursor.getString(1));
+            } while (cursor.moveToNext());
+        }
     }
 
     private void addCake() {
 
+        if (et_cake_name.getText().toString().isEmpty() || et_cake_price.getText().toString().isEmpty() || et_cake_description.getText().toString().isEmpty() || et_cake_image.getSelectedItem().toString().isEmpty()) {
+            Toast.makeText(getContext(), "Please fill in all the fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String cakeName = et_cake_name.getText().toString();
+        double cakePrice = Double.parseDouble(et_cake_price.getText().toString());
+        String cakeDescription = et_cake_description.getText().toString();
+        String cakeImage = et_cake_image.getSelectedItem().toString();
+        String cakeCategory = sp_cake_category.getSelectedItem().toString();
+
+
+        dbHelperUser.getWritableDatabase().execSQL("INSERT INTO product (product_name, product_price, product_description, product_image, product_category) VALUES (?, ?, ?, ?, ?)", new Object[]{cakeName, cakePrice, cakeDescription, cakeImage, cakeCategory});
+        loadCakes();
+        clearFields();
+
+
+        Toast.makeText(getContext(), "Add Cake functionality", Toast.LENGTH_SHORT).show();
     }
 
-    private void loadCakes() {
+    private void updateCake() {
 
+        if (et_cake_name.getText().toString().isEmpty() || et_cake_price.getText().toString().isEmpty() || et_cake_description.getText().toString().isEmpty() || et_cake_image.getSelectedItem().equals("")|| selectedCakeId == -1) {
+            Toast.makeText(getContext(), "Please fill in all the fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String cakeName = et_cake_name.getText().toString();
+        double cakePrice = Double.parseDouble(et_cake_price.getText().toString());
+        String cakeDescription = et_cake_description.getText().toString();
+        String cakeImage = et_cake_image.getSelectedItem().toString();
+        String cakeCategory = sp_cake_category.getSelectedItem().toString();
+
+        dbHelperUser.getWritableDatabase().execSQL("UPDATE product SET product_name = ?, product_price = ?, product_description = ?, product_image = ?, product_category = ? WHERE product_id = ?", new Object[]{cakeName, cakePrice, cakeDescription, cakeImage, cakeCategory, selectedCakeId});
+        Toast.makeText(getContext(), "Update Cake functionality", Toast.LENGTH_SHORT).show();
+        clearFields();
+    }
+
+    private void clearFields() {
+        et_cake_name.setText("");
+        et_cake_price.setText("");
+        et_cake_description.setText("");
+        selectedCakeId = -1;
+    }
+
+    private void deleteCake() {
+
+        if (selectedCakeId == -1) {
+            Toast.makeText(getContext(), "Please select a cake to delete", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        dbHelperUser.getWritableDatabase().execSQL("DELETE FROM product WHERE product_id = ?", new Object[]{selectedCakeId});
+        Toast.makeText(getContext(), "Delete Cake functionality", Toast.LENGTH_SHORT).show();
+        clearFields();
     }
 }

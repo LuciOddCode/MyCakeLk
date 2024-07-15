@@ -24,9 +24,9 @@ public class MainActivity extends AppCompatActivity {
     public static String CURRENT_USER="";
 
     RecyclerView recyclerView;
-    Button btnLogin;
+    Button btnLogin, btnSignUp;
     EditText txtEmail, txtPassword;
-    FloatingActionButton btnSignUp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

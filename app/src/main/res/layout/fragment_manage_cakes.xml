@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fl_manage_cake"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ManageCakesFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-
-    <LinearLayout
+    tools:context=".ManageCakesFragment"
+    android:padding="16dp">
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
+        tools:ignore="UselessParent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="Cake Details"
-            android:textStyle="bold" />
+            android:text="Manage Cakes"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:paddingBottom="16dp" />
 
         <EditText
             android:id="@+id/et_cake_name"
@@ -25,7 +30,6 @@
             android:layout_height="wrap_content"
             android:hint="Cake Name"
             android:inputType="text"
-            android:minHeight="48dp"
             android:padding="10dp" />
 
         <EditText
@@ -34,8 +38,8 @@
             android:layout_height="wrap_content"
             android:hint="Cake Price (e.g., 100.99)"
             android:inputType="numberDecimal"
-            android:minHeight="48dp"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:layout_marginTop="8dp" />
 
         <EditText
             android:id="@+id/et_cake_description"
@@ -45,66 +49,71 @@
             android:hint="Cake Description"
             android:inputType="textMultiLine"
             android:lines="4"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:layout_marginTop="8dp" />
 
-        <EditText
+        <Spinner
             android:id="@+id/et_cake_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Cake Image"
-            android:inputType="text"
-            android:minHeight="48dp"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:layout_marginTop="8dp" />
 
         <ImageView
             android:id="@+id/iv_cake_image"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="16dp"
             android:src="@drawable/ic_launcher_background" />
 
         <Spinner
             android:id="@+id/sp_cake_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="48dp"
             android:padding="10dp"
-            android:prompt="Select Category" />
+            android:layout_marginTop="8dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:gravity="center">
 
             <Button
                 android:id="@+id/btn_add_cake"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:padding="10dp"
-                android:text="Add Cake" />
+                android:layout_weight="1"
+                android:text="Add Cake"
+                android:layout_marginEnd="8dp"
+                android:padding="10dp" />
 
             <Button
                 android:id="@+id/btn_update_cake"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:enabled="false"
-                android:padding="10dp"
-                android:text="Update Cake" />
+                android:layout_weight="1"
+                android:text="Update Cake"
+                android:layout_marginEnd="8dp"
+                android:padding="10dp" />
 
             <Button
                 android:id="@+id/btn_delete_cake"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:enabled="false"
-                android:padding="10dp"
-                android:text="Delete Cake" />
+                android:layout_weight="1"
+                android:text="Delete Cake"
+                android:padding="10dp" />
+
         </LinearLayout>
+        <ListView
+            android:id="@+id/lv_cakes"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            tools:ignore="Suspicious0dp" />
     </LinearLayout>
-
-
-
+    </ScrollView>
 </FrameLayout>
