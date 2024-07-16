@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mycake.db.DBHelperUser;
 import com.example.mycake.ui.AdminDashboardActivity;
+import com.example.mycake.ui.UserDashboard;
 import com.example.mycake.ui.UserMain;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                     // user
                     CURRENT_USER = cursor.getString(2);
                     Toast.makeText(this, "Welcome User", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(this, UserMain.class);
+                    Intent intent = new Intent(this, UserDashboard.class);
                     startActivity(intent);
                 }
             } else {

@@ -13,6 +13,9 @@
         android:theme="@style/Theme.MyCake"
         tools:targetApi="31">
         <activity
+            android:name=".ui.UserDashboard"
+            android:exported="false" />
+        <activity
             android:name=".ui.UserMain"
             android:exported="false" />
         <activity

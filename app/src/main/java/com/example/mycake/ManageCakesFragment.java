@@ -29,7 +29,7 @@ public class ManageCakesFragment extends Fragment {
 
     EditText et_cake_name, et_cake_price, et_cake_description;
     ImageView iv_cake_image;
-    Spinner sp_cake_category,et_cake_image;
+    Spinner sp_cake_category, et_cake_image;
 
     Button btn_add_cake, btn_update_cake, btn_delete_cake;
     ListView lv_cakes;
@@ -110,9 +110,11 @@ public class ManageCakesFragment extends Fragment {
         loadCategories();
 
         /*loading images for image spinner*/
-        et_cake_image.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, new String[]{"cake1", "cake2", "cake3", "cake4", "cake5"}));
-
-
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, new String[]{"cake1", "cake2", "cake3", "cake4", "cake5"});
+        adapter.setNotifyOnChange(true);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.notifyDataSetChanged();
+        et_cake_image.setAdapter(adapter);
 
 
         btn_add_cake.setOnClickListener(v -> addCake());
@@ -125,20 +127,9 @@ public class ManageCakesFragment extends Fragment {
             selectedCakeId = position + 1;
         });
 
-        et_cake_image.setOnItemClickListener((adapterView, view1, position, id) -> {
-            String selectedCake = cakeList.get(position);
-            if(selectedCake.equals("cake1")){
-                iv_cake_image.setImageResource(R.mipmap.ic_cake1);
-            }else if(selectedCake.equals("cake2")){
-                iv_cake_image.setImageResource(R.mipmap.ic_cake2);
-            }else if(selectedCake.equals("cake3")){
-                iv_cake_image.setImageResource(R.mipmap.ic_cake3);
-            }else if(selectedCake.equals("cake4")){
-                iv_cake_image.setImageResource(R.mipmap.ic_cake4);
-            }else if(selectedCake.equals("cake5")){
-                iv_cake_image.setImageResource(R.mipmap.ic_cake5);
-            }
-        });
+        /*Add logic to show image when click on the spinner item and spinner does not support setOnItemSelected() method it crashed when I used it before*/
+
+
 
 
         return view;
@@ -189,7 +180,7 @@ public class ManageCakesFragment extends Fragment {
 
     private void updateCake() {
 
-        if (et_cake_name.getText().toString().isEmpty() || et_cake_price.getText().toString().isEmpty() || et_cake_description.getText().toString().isEmpty() || et_cake_image.getSelectedItem().equals("")|| selectedCakeId == -1) {
+        if (et_cake_name.getText().toString().isEmpty() || et_cake_price.getText().toString().isEmpty() || et_cake_description.getText().toString().isEmpty() || et_cake_image.getSelectedItem().equals("") || selectedCakeId == -1) {
             Toast.makeText(getContext(), "Please fill in all the fields", Toast.LENGTH_SHORT).show();
             return;
         }
