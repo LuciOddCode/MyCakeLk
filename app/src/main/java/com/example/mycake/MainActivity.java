@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
         DBHelperUser dbHelperUser = new DBHelperUser(this);
         SQLiteDatabase db = dbHelperUser.getWritableDatabase();
 
+        dbHelperUser.addSampleData();
+
         /*login*/
         btnLogin.setOnClickListener(v -> {
             String email = txtEmail.getText().toString();

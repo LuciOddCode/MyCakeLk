@@ -6,6 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.mycake.data.model.CartItem;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 public class DBHelperUser extends SQLiteOpenHelper {
 
     private Context context;
@@ -43,9 +49,10 @@ public class DBHelperUser extends SQLiteOpenHelper {
     private static final String COLUMN_ORDER_DETAIL_QUANTITY = "order_detail_quantity";
     private static final String COLUMN_ORDER_DETAIL_PRICE = "order_detail_price";
 
-
-
-
+    private static final String TABLE_PRODUCT_CART = "product_cart";
+    private static final String COLUMN_PRODUCT_CART_ID = "product_cart_id";
+    private static final String COLUMN_PRODUCT_CART_QUANTITY = "product_cart_quantity";
+    private static final String COLUMN_PRODUCT_CART_PRICE = "product_cart_price";
 
 
     public DBHelperUser(Context context) {
@@ -88,11 +95,18 @@ public class DBHelperUser extends SQLiteOpenHelper {
                 COLUMN_ORDER_DETAIL_QUANTITY + " INTEGER, " +
                 COLUMN_ORDER_DETAIL_PRICE + " DOUBLE)";
 
+        String createTableProductCart = "CREATE TABLE " + TABLE_PRODUCT_CART + " (" +
+                COLUMN_PRODUCT_CART_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_PRODUCT_ID + " INTEGER, " +
+                COLUMN_PRODUCT_CART_QUANTITY + " INTEGER, " +
+                COLUMN_PRODUCT_CART_PRICE + " DOUBLE)";
+
         db.execSQL(createTableUser);
         db.execSQL(createTableCategory);
         db.execSQL(createTableProduct);
         db.execSQL(createTableOrder);
         db.execSQL(createTableOrderDetail);
+        db.execSQL(createTableProductCart);
 
     }
 
@@ -136,6 +150,114 @@ public class DBHelperUser extends SQLiteOpenHelper {
     }
 
 
+    public void addSampleData(){
+        addCategory("Birthday");
+        addCategory("Wedding");
+        addCategory("Graduation");
+        addCategory("Anniversary");
+        addCategory("Baby Shower");
+        addCategory("Valentine");
+        addCategory("Christmas");
+        addCategory("Easter");
+        addCategory("Halloween");
+        addCategory("Thanksgiving");
+
+//        add sample products
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COLUMN_PRODUCT_NAME, "Birthday Cake 1");
+        contentValues.put(COLUMN_PRODUCT_PRICE, 50.00);
+        contentValues.put(COLUMN_PRODUCT_DESCRIPTION, "Birthday Cake 1 Description");
+        contentValues.put(COLUMN_PRODUCT_IMAGE, "cake1");
+        contentValues.put(COLUMN_PRODUCT_CATEGORY, "Birthday");
+        db.insert(TABLE_PRODUCT, null, contentValues);
+
+        contentValues.clear();
+
+        contentValues.put(COLUMN_PRODUCT_NAME, "Birthday Cake 2");
+        contentValues.put(COLUMN_PRODUCT_PRICE, 60.00);
+        contentValues.put(COLUMN_PRODUCT_DESCRIPTION, "Birthday Cake 2 Description");
+        contentValues.put(COLUMN_PRODUCT_IMAGE, "cake2");
+        contentValues.put(COLUMN_PRODUCT_CATEGORY, "Birthday");
+        db.insert(TABLE_PRODUCT, null, contentValues);
+
+        contentValues.clear();
+
+        contentValues.put(COLUMN_PRODUCT_NAME, "Wedding Cake 1");
+        contentValues.put(COLUMN_PRODUCT_PRICE, 100.00);
+        contentValues.put(COLUMN_PRODUCT_DESCRIPTION, "Wedding Cake 1 Description");
+        contentValues.put(COLUMN_PRODUCT_IMAGE, "cake3");
+        contentValues.put(COLUMN_PRODUCT_CATEGORY, "Wedding");
+        db.insert(TABLE_PRODUCT, null, contentValues);
 
 
+    }
+
+
+    public Cursor getAllCart() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_PRODUCT_CART, null);
+    }
+
+    public List<CartItem> getCartItems() {
+        SQLiteDatabase readableDatabase = this.getReadableDatabase();
+        Cursor cursor = readableDatabase.rawQuery("SELECT * FROM " + TABLE_PRODUCT_CART, null);
+        List<CartItem> cartItems = new ArrayList<>();
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(0);
+                int product_id = cursor.getInt(1);
+                int quantity = cursor.getInt(2);
+                double price = cursor.getDouble(3);
+
+                Cursor product=readableDatabase.rawQuery("SELECT * FROM "+TABLE_PRODUCT+" WHERE "+COLUMN_PRODUCT_ID+" = "+product_id,null);
+                if(product!=null && product.moveToFirst()) {
+
+                    String name = product.getString(1);
+                    String image = product.getString(4);
+
+                    cartItems.add(new CartItem(product_id, name, String.valueOf(price), "", image, "", quantity));
+                }
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        return cartItems;
+    }
+
+    public void placeOrder(CartItem cartItem) {
+        SQLiteDatabase writableDatabase = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        /*  String createTableOrder = "CREATE TABLE " + TABLE_ORDER + " (" +
+                COLUMN_ORDER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_ORDER_USER_ID + " INTEGER, " +
+                COLUMN_ORDER_TOTAL_PRICE + " DOUBLE, " +
+                COLUMN_ORDER_DATE + " TEXT, " +
+                COLUMN_ORDER_STATUS + " TEXT)";
+
+        String createTableOrderDetail = "CREATE TABLE " + TABLE_ORDER_DETAIL + " (" +
+                COLUMN_ORDER_DETAIL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_ORDER_ID + " INTEGER, " +
+                COLUMN_PRODUCT_ID + " INTEGER, " +
+                COLUMN_ORDER_DETAIL_QUANTITY + " INTEGER, " +
+                COLUMN_ORDER_DETAIL_PRICE + " DOUBLE)";*/
+        values.put(COLUMN_ORDER_USER_ID, 1);
+        values.put(COLUMN_ORDER_TOTAL_PRICE, Double.parseDouble(cartItem.getPrice()));
+        values.put(COLUMN_ORDER_DATE, "2021-09-01");
+        values.put(COLUMN_ORDER_STATUS, "Pending");
+        long orderId = writableDatabase.insert(TABLE_ORDER, null, values);
+
+        values.clear();
+        values.put(COLUMN_ORDER_ID, orderId);
+        values.put(COLUMN_PRODUCT_ID, cartItem.getId());
+        values.put(COLUMN_ORDER_DETAIL_QUANTITY, cartItem.getQuantity());
+        values.put(COLUMN_ORDER_DETAIL_PRICE, Double.parseDouble(cartItem.getPrice()));
+        writableDatabase.insert(TABLE_ORDER_DETAIL, null, values);
+
+    }
+
+    public void removeCartItem(int id) {
+        SQLiteDatabase writableDatabase = this.getWritableDatabase();
+        writableDatabase.delete(TABLE_PRODUCT_CART, COLUMN_PRODUCT_CART_ID + " = ?", new String[]{String.valueOf(id)});
+    }
 }

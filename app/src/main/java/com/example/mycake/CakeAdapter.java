@@ -28,7 +28,7 @@ public class CakeAdapter extends RecyclerView.Adapter<CakeAdapter.CakeViewHolder
     @NonNull
     @Override
     public CakeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_home, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_cake_item, parent, false);
         return new CakeViewHolder(view);
     }
 
@@ -67,7 +67,7 @@ public class CakeAdapter extends RecyclerView.Adapter<CakeAdapter.CakeViewHolder
             tvCakeName.setText("Name : "+cake.getName());
             tvCakePrice.setText("Price Rs: "+cake.getPrice());
             tvCakeDescription.setText(cake.getDescription());
-            ivCakeImage.setImageResource(Integer.parseInt(cake.getImage()));
+
             tvCakeCategory.setText("Category : "+cake.getCategory());
             btnAddToCart.setOnClickListener(v -> cakeActionListener.onAddToCart(cake));
 
